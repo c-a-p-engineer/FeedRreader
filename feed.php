@@ -1,5 +1,7 @@
 <?php
 require_once 'FeedReader/FeedReader.php';
+ini_set('memory_limit', '-1');
+ini_set('max_execution_time', 0);
 
 function sortByKey($keyName, $sortOrder, $array) {
     $temp = [];
@@ -18,7 +20,7 @@ $posts = [];
 foreach ($setting['urls'] as $url) {
     $result = FeedReader::loadFeed($url);
     if(count($result)  > 0 ){
-        $posts += $result;
+        $posts = array_merge($posts, $result);
     }
 }
 
@@ -41,9 +43,20 @@ $html = <<<HTML
   <body>
 HTML;
 
+$colors = [
+  ' bg-secondary text-white',
+  ' bg-light text-dark',
+];
+$i = 0;
+
 $html .= '<ul class="list-group">';
 foreach($posts as $post){
-    $html .= '<a href="'.$post['link'].'" class="list-group-item list-group-item-action" target="_blank">' . $post['date'] . ' | ' . $post['title'] . ' | ' . $post['siteTitle'] . '</a>';
+    $html .= '<a href="'.$post['link'].'" class="list-group-item list-group-item-action' . $colors[($i % count($colors))] . '" target="_blank">' . $post['date'] . ' | ' . $post['title'] . ' | ' . $post['siteTitle'] . '</a>';
+    $i++;
+
+    if($i == ($setting['count'] ?? 100)){
+        continue;
+    }
 }
 $html .= '</ul">';
 

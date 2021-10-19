@@ -1,0 +1,23 @@
+name: Create RSS
+  schedule:
+    - cron: '*/5 * * * *'
+
+jobs:
+  create-rss:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Create RSS List
+      - name: Create RSS List
+        run: |
+          php ./feed.php
+
+      # Commit
+      - name: Commit
+        uses: stefanzweifel/git-auto-commit-action@v4.2.0
+        with:
+          commit_message: RSS List Update
