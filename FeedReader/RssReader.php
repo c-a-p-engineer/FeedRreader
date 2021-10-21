@@ -1,12 +1,13 @@
 <?php
 
-class RssReader {
-    public static function load(string $url):array
+class RssReader
+{
+    public static function load(string $url): array
     {
         // 記事を格納
         $posts = [];
         // URL判定
-        if( !filter_var( $url, FILTER_VALIDATE_URL ) ){
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
             return [];
         }
         // feed取得
@@ -17,7 +18,7 @@ class RssReader {
         $siteDescription = (string)$feed->channel->description;
 
         // 記事情報取得
-        foreach($feed->item as $item){
+        foreach ($feed->item as $item) {
             // RSS 1.0系
             $title = (string)$item->title;
             $date = date("Y-m-d H:i:s", strtotime($item->children('http://purl.org/dc/elements/1.1/')->date));
@@ -34,7 +35,7 @@ class RssReader {
                 'description' => $description,
             ];
         }
-         foreach($feed->channel->item as $item){
+        foreach ($feed->channel->item as $item) {
             // RSS 2.0系
             $title = (string)$item->title;
             $date = date("Y-m-d H:i:s", strtotime($item->pubDate));
@@ -42,13 +43,13 @@ class RssReader {
             $description = (string)$item->description;
 
             $posts[] = [
-                'siteTitle' => $siteTitle,
-                'siteUrl' => $siteUrl,
-                'siteDescription' => $siteDescription,
-                'title' => $title,
-                'date' => $date,
-                'link' => $link,
-                'description' => $description,
+               'siteTitle' => $siteTitle,
+               'siteUrl' => $siteUrl,
+               'siteDescription' => $siteDescription,
+               'title' => $title,
+               'date' => $date,
+               'link' => $link,
+               'description' => $description,
             ];
         }
         return $posts;

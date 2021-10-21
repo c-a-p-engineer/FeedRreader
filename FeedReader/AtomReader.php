@@ -1,12 +1,13 @@
 <?php
 
-class AtomReader {
-    public static function load(string $url):array
+class AtomReader
+{
+    public static function load(string $url): array
     {
         // 記事を格納
         $posts = [];
         // URL判定
-        if( !filter_var( $url, FILTER_VALIDATE_URL ) ){
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
             return [];
         }
         // feed取得
@@ -17,7 +18,7 @@ class AtomReader {
         $siteDescription = (string)$feed->description;
 
         // 記事情報取得
-        foreach($feed->entry as $item){
+        foreach ($feed->entry as $item) {
             $title = (string)$item->title;
             $date = date("Y-m-d H:i:s", strtotime($item->published));
             $link = (string)$item->link->attributes()->href;
