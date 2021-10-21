@@ -1,0 +1,29 @@
+name: PHP_CodeSniffier
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  create-rss:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Composer Install
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      # PHPCS
+      - name: PHPCS
+        run: ./vendor/bin/phpcbf .
+
+      # Commit
+      - name: Commit
+        uses: stefanzweifel/git-auto-commit-action@v4.2.0
+        with:
+          commit_message: PHPCS

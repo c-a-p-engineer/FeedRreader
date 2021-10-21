@@ -1,6 +1,7 @@
 name: Create RSS
+on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/5 * * *'
 
 jobs:
   create-rss:
